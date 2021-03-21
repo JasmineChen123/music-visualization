@@ -11,23 +11,26 @@
   	<header>
   		<h1><%= title %></h1>
   		<ul class="type" id="type">
-  			<li data-type="dot">Dot</li>
+  			<li data-type="dot">Glim</li>
   			<li data-type="column" class="selected">Column</li>
-  			<li data-type="glim">glim</li>
+  			<li data-type="glim">Dot</li>
+  			<li data-type="star">Star</li>
   		</ul>
   		<p>
   			Volume <input id="volume" type="range" min="0" max="100" value="60">
   		</p>
   	</header>
+
 	<div class="left">
 		<ul id="list">
 			<% music.forEach(function(name){ %>
 				<li title="<%= name %>"><%= name %></li>
 			<% })%>
 		</ul>
+        <button id="Button">Close</button>
 	</div>
 	<div class="right" id="box">
-	    <img id='loading' src="images/loading.gif">
+	    <img class='loading' src="images/loading.gif">
 	</div>
 
 	<script type="text/javascript" src="/javascripts/jquery.min.js"></script>
