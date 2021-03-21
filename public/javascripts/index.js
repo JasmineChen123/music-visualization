@@ -25,7 +25,6 @@ for (var i = 0; i < lis.length; i++) {
 		}
 		this.className = "selected";
 		mv.play("/media/" + this.title);
-
 	}
 }
 
@@ -55,9 +54,9 @@ function resize() { //动态改变canvas区域的宽高
 	canvas.height = height;
 	canvas.width = width;
 	line = ctx.createLinearGradient(0, 0, 0, height); //创建线性渐变
-	line.addColorStop(0, "red");
-	line.addColorStop(0.5, "yellow");
-	line.addColorStop(1, "green");
+	line.addColorStop(0, "gold");
+	line.addColorStop(0.5, "cyan");
+	line.addColorStop(1, "magenta");
 	getDots();
 }
 resize();
@@ -98,8 +97,6 @@ function draw(arr) { // 绘制矩形函数
 			ctx.fill();
 			o.x += o.dx; // 圆向右移动
 			o.x = o.x > width ? 0 : o.x; // 移到最右边时回到最左边
-			//ctx.strokeStyle = "#fff";  //描边颜色
-			//ctx.stroke(); //描边
 		}
 	}else if (draw.type === 'glim') {
 	    for (var i = 0; i < size; i++) {
@@ -115,6 +112,29 @@ function draw(arr) { // 绘制矩形函数
             o.x=o.x>width?0:o.x;
             ctx.closePath();
 		}
+	}else if (draw.type==="star"){
+	    twoPI = 2 * Math.PI,
+        angleGap = twoPI / 3,
+	    angle = 0;
+	    color = 'rgba(186, 135, 72, 0.5)';
+	    cx = canvas.width / 2;
+	    cy = canvas.height / 2;
+	    ctx.clearRect(0, 0, canvas.width, canvas.height);
+	    ctx.globalCompositeOperation = 'lighter';
+	    ctx.strokeStyle = color;
+	    ctx.lineWidth = 10;
+	    total = 0;
+	    for (i = 12; i < size; i += 2) {
+	        angle += 0.2;
+	        ctx.beginPath();
+	        ctx.moveTo(cx + arr[i] * Math.sin(angle), cy + arr[i] * Math.cos(angle));
+	        ctx.lineTo(cx + arr[i] * Math.sin(angle + angleGap), cy + arr[i] * Math.cos(angle + angleGap));
+	        ctx.lineTo(cx + arr[i] * Math.sin(angle + angleGap * 2), cy + arr[i] * Math.cos(angle + angleGap * 2));
+	        ctx.closePath();
+	        ctx.stroke();
+	        total += arr[i];
+	    }
+	    ctx.restore();
 	}
 }
 
@@ -138,3 +158,8 @@ $('#volume')[0].onmousemove = function() {
 	mv.changeVolume(this.value / this.max); //频率
 }
 $('#volume')[0].onmousemove(); // 让它默认60生效
+
+
+$('#box').onclick = function() {
+	$("#box").hide(1);
+}
