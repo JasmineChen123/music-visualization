@@ -5,6 +5,7 @@
   	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/index.css' />
+    <meta name="keywords" content="html5 javscript 音乐可视化">
   </head>
   <body>
   	<header>
@@ -12,6 +13,7 @@
   		<ul class="type" id="type">
   			<li data-type="dot">Dot</li>
   			<li data-type="column" class="selected">Column</li>
+  			<li data-type="glim">glim</li>
   		</ul>
   		<p>
   			Volume <input id="volume" type="range" min="0" max="100" value="60">
@@ -24,7 +26,11 @@
 			<% })%>
 		</ul>
 	</div>
-	<div class="right" id="box"></div>
+	<div class="right" id="box">
+	    <img id='loading' src="images/loading.gif">
+	</div>
+
+	<script type="text/javascript" src="/javascripts/jquery.min.js"></script>
 	<script type="text/javascript" src="/javascripts/MusicVisualizer.js"></script>
 	<script type="text/javascript" src="/javascripts/index.js"></script>
   </body>
