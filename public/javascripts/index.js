@@ -101,19 +101,17 @@ function draw(arr) { // 绘制矩形函数
 		}
 	}else if (draw.type === 'glim') {
 	    for (var i = 0; i < size; i++) {
+	        ctx.beginPath(); // 表示要开始绘制，没有该方法会有连线
 		    var o = Dots[i];
-			ctx.beginPath(); // 表示要开始绘制，没有该方法会有连线
 			var r = 10 + arr[i] / 256 * (height > width ? width : height) / 10; //绘制圆的半径(设置最小值为10)
 			ctx.arc(o.x, o.y, r, 0, Math.PI * 2, true);
-			var g = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, r); //创建径向渐变
-			g.addColorStop(0, "#fff");
-			g.addColorStop(1, o.color);
-			ctx.fillStyle = g;
-			ctx.fill();
-			o.x += o.dx; // 圆向右移动
-			o.x = o.x > width ? 0 : o.x; // 移到最右边时回到最左边
-			//ctx.strokeStyle = "#fff";  //描边颜色
-			//ctx.stroke(); //描边
+            ctx.fillStyle = 'rgba(255,255,255,' + o.alpha + ')';
+            ctx.fill();
+            ctx.shadowBlur = o.shadowBlur;
+            ctx.shadowColor = o.color;
+            o.x+=o.dx;
+            o.x=o.x>width?0:o.x;
+            ctx.closePath();
 		}
 	}
 }
