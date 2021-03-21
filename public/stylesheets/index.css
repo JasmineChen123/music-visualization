@@ -142,12 +142,14 @@ input[type="range"]::-moz-range-thumb{
 	}
 }
 .loading{
-    width: 100%;
+    width: 50%;
     height: 99%;
     left: 0px;
     right: 0px;
     position: absolute;
     margin: auto;
     top: 0%;
-    /*display: none;*/
+    display: none
 }
+
+
