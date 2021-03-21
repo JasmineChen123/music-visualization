@@ -68,10 +68,9 @@ function draw(arr) { // 绘制矩形函数
 	var cw = w * 0.6; // 矩形的宽度
 	var capH = cw > 10 ? 10 : cw; // 小帽的高度
 	ctx.fillStyle = line; // 每次点击矩形展示，会到矩形展示
-
-	if (draw.type === 'column')
-	{   for (var i = 0; i < size; i++) {
-		    var o = Dots[i];
+	for (var i = 0; i < size; i++) {
+		var o = Dots[i];
+		if (draw.type === 'column') {
 			var h = arr[i] / 256 * height;
 			ctx.fillRect(w * i, height - h, cw, h); //x轴坐标,y轴坐标,宽度(0.4留为间隙),高度
 			ctx.fillRect(w * i, height - (o.cap + capH), cw, capH); //绘制小帽
@@ -82,10 +81,7 @@ function draw(arr) { // 绘制矩形函数
 			if (h > 0 && o.cap < h + 40) { // 保持小帽和矩形条的距离是40
 				o.cap = h + 40 > height - capH ? height - capH : h + 40;
 			}
-		}
-	} else if (draw.type === 'dot') {
-	    for (var i = 0; i < size; i++) {
-		    var o = Dots[i];
+		} else if (draw.type === 'dot') {
 			ctx.beginPath(); // 表示要开始绘制，没有该方法会有连线
 			var r = 10 + arr[i] / 256 * (height > width ? width : height) / 10; //绘制圆的半径(设置最小值为10)
 			ctx.arc(o.x, o.y, r, 0, Math.PI * 2, true);
@@ -99,23 +95,8 @@ function draw(arr) { // 绘制矩形函数
 			//ctx.strokeStyle = "#fff";  //描边颜色
 			//ctx.stroke(); //描边
 		}
-	}else if (draw.type === 'glim') {
-	    for (var i = 0; i < size; i++) {
-	        ctx.beginPath(); // 表示要开始绘制，没有该方法会有连线
-		    var o = Dots[i];
-			var r = 10 + arr[i] / 256 * (height > width ? width : height) / 10; //绘制圆的半径(设置最小值为10)
-			ctx.arc(o.x, o.y, r, 0, Math.PI * 2, true);
-            ctx.fillStyle = 'rgba(255,255,255,' + o.alpha + ')';
-            ctx.fill();
-            ctx.shadowBlur = o.shadowBlur;
-            ctx.shadowColor = o.color;
-            o.x+=o.dx;
-            o.x=o.x>width?0:o.x;
-            ctx.closePath();
-		}
 	}
 }
-
 
 /* 切换柱状图或者点状的展现 */
 draw.type = "column"; // 在draw函数上绑定一个属性，默认展现柱状图
@@ -130,8 +111,6 @@ for (var i = 0; i < types.length; i++) {
 	}
 }
 
-
-/*音量*/
 $('#volume')[0].onmousemove = function() {
 	mv.changeVolume(this.value / this.max); //频率
 }
