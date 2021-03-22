@@ -8,13 +8,21 @@
     <meta name="keywords" content="html5 javscript 音乐可视化">
   </head>
   <body>
+    <div id="background"></div>
   	<header>
   		<h1><%= title %></h1>
   		<ul class="type" id="type">
-  			<li data-type="dot">Glim</li>
+  			<li data-type="glim">Glim</li>
   			<li data-type="column" class="selected">Column</li>
-  			<li data-type="glim">Dot</li>
+  			<li data-type="dot">Dot</li>
   			<li data-type="star">Star</li>
+  			<li data-type="bubble">Bubble</li>
+  		</ul>
+  		<br>
+  		 <ul class="type" id="type">
+  			<li data-type="bar">Bar</li>
+  			<li data-type="spot">Spot</li>
+  			<li data-type="flow">Flow</li>
   		</ul>
   		<p>
   			Volume <input id="volume" type="range" min="0" max="100" value="60">
@@ -33,6 +41,7 @@
 	    <img class='loading' src="images/loading.gif">
 	</div>
 
+    <script type="text/javascript" src="/javascripts/three.min.js"></script>
 	<script type="text/javascript" src="/javascripts/jquery.min.js"></script>
 	<script type="text/javascript" src="/javascripts/MusicVisualizer.js"></script>
 	<script type="text/javascript" src="/javascripts/index.js"></script>
