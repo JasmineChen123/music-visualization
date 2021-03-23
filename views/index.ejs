@@ -12,17 +12,17 @@
   	<header>
   		<h1><%= title %></h1>
   		<ul class="type" id="type">
-  			<li data-type="glim">Glim</li>
-  			<li data-type="column" class="selected">Column</li>
+  			<li data-type="glim" class="selected">Glim</li>
+  			<li data-type="column" >Column</li>
   			<li data-type="dot">Dot</li>
   			<li data-type="star">Star</li>
-  			<li data-type="bubble">Bubble</li>
   		</ul>
   		<br>
   		 <ul class="type" id="type">
   			<li data-type="bar">Bar</li>
+  			<li data-type="bubble">Bubble</li>
   			<li data-type="spot">Spot</li>
-  			<li data-type="flow">Flow</li>
+  			<li data-type="cardiogram">Cardio</li>
   		</ul>
   		<p>
   			Volume <input id="volume" type="range" min="0" max="100" value="60">
@@ -37,13 +37,18 @@
 		</ul>
         <button id="Button">Close</button>
 	</div>
+
 	<div class="right" id="box">
 	    <img class='loading' src="images/loading.gif">
 	</div>
+
 
     <script type="text/javascript" src="/javascripts/three.min.js"></script>
 	<script type="text/javascript" src="/javascripts/jquery.min.js"></script>
 	<script type="text/javascript" src="/javascripts/MusicVisualizer.js"></script>
 	<script type="text/javascript" src="/javascripts/index.js"></script>
   </body>
+
+  <audio id="music" class="hidden" controls></audio>
+
 </html>
