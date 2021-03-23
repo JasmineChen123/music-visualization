@@ -57,6 +57,31 @@ header h1{
 a {
   color: #00B7FF;
 }
+/*音频*/
+audio::-webkit-media-controls-panel {
+    -webkit-appearance:none;
+    background-color: #404040;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+    border-radius: 0;
+}
+
+audio::-webkit-media-controls-current-time-display {
+    color: #30ABD5;
+}
+
+#music {
+    position: fixed;
+    width: 85%;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    -webkit-transition: opacity 0.3s;
+}
+
+#music:hover {
+    opacity: 1;
+}
+/*---------------------*/
 
 /* 选择哪种展现方式 */
 header .type {
@@ -120,6 +145,72 @@ input[type="range"]::-moz-range-thumb{
 	background: #fff;
 	border: none;
 }
+/*背景设置*/
+#background{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+.bg0 {
+    background-color: #13242f;
+    background-image: url(../img/bg0.png), -webkit-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0) 20%, #000000 95%);
+}
+
+.bg1 {
+    background-color: #fff;
+    background-image: url(../img/bg1.png);
+}
+
+.bg2 {
+    background-image: url(../img/bg2.png);
+}
+
+.bg3 {
+    background-position: center center;
+    background-attachment: fixed;
+    background-image: url(../img/bg3.jpg);
+    -webkit-background-size: cover;
+       -moz-background-size: cover;
+        -ms-background-size: cover;
+    background-size: cover;
+}
+
+.bg4 {
+    background-color: #815EAD;
+    background-image: -webkit-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0) 0%, #000000 95%);
+}
+
+.bg5 {
+    background-color: #fff;
+    background-image: -webkit-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0) 0%, #000000 95%), url(../images/bg5.png);
+}
+
+.bg6 {
+    background-color: #fff;
+    background-image: url(../img/bg6.png);
+}
+
+.bg7 {
+    background-color: #21509f;
+    background-image: url(../img/bg0.png), -webkit-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0) 0%, #000000 95%);
+}
+
+.bg8 {
+    background-image: -webkit-linear-gradient(#000, rgba(0, 0, 0, 0.5) 20%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5) 80%, #000), url(../img/bg8.png);
+}
+
+.bg9 {
+    background-image: -webkit-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.5) 0%, #000000 100%), url(../img/bg9.png);
+}
+
+.bg10 {
+    background-image: -webkit-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.9) 0%, #000000 100%), url(../img/bg10.jpg);
+    background-size: cover;
+}
+
+/*------------------------------*/
 @media screen and (max-width: 800px),screen and (max-height: 500px){
 	body{
 		font-size: 12px;
