@@ -59,6 +59,19 @@ for(var i = 0; i < 128; i++){
         vy: Math.round(Math.random() * 1) - 1.5
     }
 }
+//initial for cardiogram
+var lastValue = [];
+var     seperate = [], // 间隙
+        seperateTimer = 0, // 间隙转换计时
+        shadowBlur = 0, // 线模糊值
+        avarage = 0; // 平均值
+for (var i = 0; i < 256; i++) {
+     lastValue[i] = 0;
+    }
+line_color = {r: 100,g: 100,b: 100,
+              rS: intRandom(1, 3),gS: intRandom(1, 3),bS: intRandom(1, 3),
+              rD: 1, gD: 1, bD: 1,}
+
 
 /**----------------------------------------------------------------------------**/
 //接收获取音频频率的函数数组
@@ -67,15 +80,7 @@ var mv = new MusicVisualizer({
 	visualizer: draw
 });
 
-for (var i = 0; i < lis.length; i++) {
-	lis[i].onclick = function() {
-		for (var j = 0; j < lis.length; j++) {
-			lis[j].className = "";
-		}
-		this.className = "selected";
-		mv.play("/media/" + this.title);
-	}
-}
+/*---------------------------------------------------------*/
 /*杂项函数*/
 // 随机生成两个数之间的数
 function random(m, n) {
@@ -90,7 +95,33 @@ function findDistance(p1, p2){
 function intRandom(low, up) {
     return Math.floor(Math.random() * (up - low) + low);
 }
+function changeColor() {
+    choice = intRandom(0, 9);
+    if (choice < 3) {
+        line_color.r = line_color.r + line_color.rS * line_color.rD;
+        if (line_color.r > 225) {
+            line_color.rD = -1;
+        } else if (line_color.r < 100) {
+            line_color.rD = 1;
+        }
+    } else if (choice < 6) {
+        line_color.g = line_color.g + line_color.gS * line_color.gD;
+        if (line_color.g > 225) {
+            line_color.gD = -1;
+        } else if (line_color.g < 100) {
+            line_color.gD = 1;
+        }
+    } else {
+        line_color.b = line_color.b + line_color.bS * line_color.bD;
+        if (line_color.b > 225) {
+            line_color.bD = -1;
+        } else if (line_color.b < 100) {
+            line_color.bD = 1;
+        }
+    }
+}
 
+/*------------------------------------------------------------*/
 
 //斑点生成函数
 function getDots() {
@@ -114,8 +145,8 @@ function getDots() {
 	}
 }
 
-
-function resize() { //动态改变canvas区域的宽高
+//动态改变canvas区域的宽高
+function resize() {
 	height = box.clientHeight;
 	width = box.clientWidth;
 	canvas.height = height;
@@ -131,31 +162,63 @@ resize();
 window.onresize = resize;
 
 function draw(arr) { // 绘制矩形函数
-	ctx.clearRect(0, 0, width, height); // 清除上次canvas,保证流畅效果
+	//ctx.clearRect(0, 0, canvas.width, canvas.height); // 清除上次canvas,保证流畅效果
 	var w = width / size;
 	var cw = w * 0.6; // 矩形的宽度
 	var capH = cw > 10 ? 10 : cw; // 小帽的高度
-	ctx.fillStyle = line; // 每次点击矩形展示，会到矩形展示
+
+	ctx.fillStyle = line; // 会到矩形展示
 
 	if (draw.type === 'column')
-	{   ctx.clearRect(0, 0, width, height); // 清除上次canvas,保证流畅效果
-	    for (var i = 0; i < size; i++) {
-		    var o = Dots[i];
-			var h = arr[i] / 256 * height;
-			ctx.fillRect(w * i, height - h, cw, h); //x轴坐标,y轴坐标,宽度(0.4留为间隙),高度
-			ctx.fillRect(w * i, height - (o.cap + capH), cw, capH); //绘制小帽
-			o.cap--;
-			if (o.cap < 0) { // 没点击歌曲时小帽的初始位置
-				o.cap = 0;
-			}
-			if (h > 0 && o.cap < h + 40) { // 保持小帽和矩形条的距离是40
-				o.cap = h + 40 > height - capH ? height - capH : h + 40;
-			}
-		}
-		ctx.restore();
+	{
+		ctx.save();
+		var i,b;
+        var total = 0, avarage = 0;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        line = ctx.createLinearGradient(0, 0, 0, canvas.height*0.8); //创建线性渐变
+	    line.addColorStop(0, "gold");
+	    line.addColorStop(0.5, "cyan");
+	    line.addColorStop(1, "magenta");
+
+        for (i = 0; i < 128; i++) {
+            b = bars[i];
+            if (b.h == 0) {
+                b.h = arr[i];
+            }
+            else {
+                if (b.h < arr[i]) {
+                    b.h += Math.floor((arr[i] - b.h) / 2);
+                } else {
+                    b.h -= Math.floor((b.h - arr[i]) / 1.2);
+                }
+            }
+            ctx.fillStyle = line;
+            /*ctx.fillStyle = 'rgba(' + b.color + ', 0.8)';*/
+            b.h *= 1.8;
+            ctx.fillRect(b.x, canvas.height - b.h, b.w*0.8, b.h);
+            if (dots[i] < b.h) {
+                dots[i] = b.h;
+            } else {
+                dots[i]--;
+            };
+	        ctx.fillStyle = line;
+            /*ctx.fillStyle = ctx.fillStyle.replace('0.8)', '0.5)');*/
+            ctx.fillRect(b.x, canvas.height - dots[i] - b.w, b.w*0.8, b.w);
+            total += arr[i];
+	    }
+        avarage = Math.floor(total / 32);
+
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+        ctx.fillRect(0, canvas.height - avarage, canvas.width, avarage);
+        ctx.fillRect(canvas.width - avarage, 0, avarage, canvas.height);
+        ctx.fillRect(0, 0, canvas.width, avarage);
+        ctx.fillRect(0, 0, avarage, canvas.height);
+        ctx.restore();
+
 	} else if (draw.type === 'glim') {
 	    ctx.save();
-	    ctx.clearRect(0, 0, width, height);
+	    ctx.clearRect(0, 0, canvas.width, canvas.height); //否则会产生划过的痕迹
 	    for (var i = 0; i < size; i++) {
 		    var o = Dots[i];
 			ctx.beginPath(); // 表示要开始绘制，没有该方法会有连线
@@ -167,12 +230,13 @@ function draw(arr) { // 绘制矩形函数
 			ctx.fillStyle = g;
 			ctx.fill();
 			o.x += o.dx; // 圆向右移动
-			o.x = o.x > width ? 0 : o.x; // 移到最右边时回到最左边
+			o.x = o.x > canvas.width ? 0 : o.x; // 移到最右边时回到最左边！！
 		}
 		ctx.restore();
+
 	}else if (draw.type === 'dot') {
 	    ctx.save();
-	    ctx.clearRect(0, 0, width, height);
+	    ctx.clearRect(0, 0, canvas.width, canvas.height);
 	    for (var i = 0; i < size; i++) {
 	        ctx.beginPath(); // 表示要开始绘制，没有该方法会有连线
 		    var o = Dots[i];
@@ -183,7 +247,7 @@ function draw(arr) { // 绘制矩形函数
             //ctx.shadowBlur = o.shadowBlur;
             //ctx.shadowColor = o.color;
             o.x+=o.dx;
-            o.x=o.x>width?0:o.x;
+            o.x=o.x>canvas.width?0:o.x;//回到最左边！！
             ctx.closePath();
 		}
 		ctx.restore();
@@ -308,6 +372,7 @@ function draw(arr) { // 绘制矩形函数
             p = spot_particles[i];
             if (p.size == 0) {
                 p.size = arr_[i];
+
             } else {
                 if (p.size < arr_[i]) {
                     p.size += Math.floor((arr_[i] - p.size) / 5);
@@ -337,12 +402,96 @@ function draw(arr) { // 绘制矩形函数
             ctx.fill();
         }
         ctx.restore();
-  }
+    }
+    else if(draw.type==="cardiogram")
+    {   ctx.save();
 
+        var color = null,
+            choice;
+        var width = canvas.width / 64, //changed
+            x = 0,//调整后会有不规则线条
+            y = 0,
+            direction = 1,
+            middle =  canvas.height / 2 ,
+            seperateLength = 0,
+            seperateNum = 0,
+            total = 0,
+            lastAvarage = avarage;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        changeColor(); //改变颜色
+        var grd = ctx.createLinearGradient(0, 0, canvas.width, canvas.height),
+            r = line_color.r,
+            g = line_color.g,
+            b = line_color.b;
+        ctx.shadowColor = 'rgba(' + (r + 70) + ', ' + (g + 70) + ', ' + (b + 70) + ', 1)';
+        ctx.shadowBlur = shadowBlur;
+        ctx.strokeStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', 1)';
+        ctx.lineWidth = 5;
+        ctx.lineJoin = 'miter';
+        ctx.miterLimit = 100;
+
+        ctx.beginPath();//开始画线
+        ctx.moveTo(0, canvas.height / 2);
+
+        if (seperateTimer == 0) {
+            seperateTimer = Math.floor(Math.random() * 50) + 20;
+            for (var i = 0; i <64; i++) {//changed
+                seperate[i] = 0;
+            }
+            seperateNum = Math.floor(Math.random() * 15);
+            for (var i = 0; i < seperateNum; i++) {
+                seperateLength = Math.floor(Math.random() * 15);
+                var temp = Math.floor(Math.random() * 32);
+                seperate[temp] = 1;
+                for (var j = 1; j < seperateLength; j++) {
+                    seperate[temp + j] = 1;
+                }
+            }
+        } else {
+            seperateTimer--;
+        }
+        for (var i = 0; i <64; i++) {
+            y = arr[i] - (100 - i) * 0.2;
+            y = (y - 80) < 0 ? 0 : y - 80;
+            if (y > middle) {
+                y = middle;
+            }
+            if (seperate[i] == 1) {
+                lastValue[i] -= 20;
+                if (lastValue[i] < 0) {
+                    lastValue[i] = 0;
+                }
+                y = lastValue[i];
+            } else {
+                if (y - lastValue[i] > 20) {
+                    lastValue[i] += 20;
+                    y = lastValue[i];
+                } else {
+                    lastValue[i] = y;
+                }
+            }
+            y = y * direction + middle;
+            ctx.lineTo(x, y);
+            total += y;
+            direction = -direction;
+            x = x + 2*width;
+        }
+        avarage = total / 128;
+        if (lastAvarage > avarage) {
+            shadowBlur--;
+        } else {
+            shadowBlur++;
+        }
+        ctx.lineTo(canvas.width, canvas.height/2);//画线终止
+        ctx.stroke();
+        ctx.restore();
+    }
 }
+/*--------------------------------------------------------------*/
 
-/* 切换柱状图或者点状的展现 */
-draw.type = "column"; // 在draw函数上绑定一个属性，默认展现柱状图
+/* 切换展现类型 */
+draw.type = "glim"; // 在draw函数上绑定一个属性，默认展现glim图
 var types = $("#type li");
 for (var i = 0; i < types.length; i++) {
 	types[i].onclick = function() {
@@ -360,6 +509,16 @@ $('#volume')[0].onmousemove = function() {
 }
 $('#volume')[0].onmousemove(); // 让它默认60生效
 
-//$('#box').onclick = function() {
-//	$("#box").hide(1);
-//}
+
+
+/*选择某一首歌播放*/
+for (var i = 0; i < lis.length; i++) {
+	lis[i].onclick = function() {
+		for (var j = 0; j < lis.length; j++) {
+			lis[j].className = "";
+		}
+		this.className = "selected";
+		mv.play("/media/" + this.title);//调用mv的play来演奏/media/下的乐曲
+	}
+}
+
