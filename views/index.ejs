@@ -11,19 +11,19 @@
     <div id="background"></div>
   	<header>
   		<h1><%= title %></h1>
-  		<ul class="type" id="type">
-  			<li data-type="glim" class="selected">Glim</li>
-  			<li data-type="column" >Column</li>
-  			<li data-type="dot">Dot</li>
-  			<li data-type="star">Star</li>
-  		</ul>
-  		<br>
-  		 <ul class="type" id="type">
-  			<li data-type="bar">Bar</li>
-  			<li data-type="bubble">Bubble</li>
-  			<li data-type="spot">Spot</li>
-  			<li data-type="cardiogram">Cardio</li>
-  		</ul>
+<ul class="type" id="type">
+   <li data-type="glim" class="selected">Glim</li>
+   <li data-type="column" >Column</li>
+   <li data-type="dot">Dot</li>
+   <li data-type="star">Star</li>
+</ul>
+<br>
+ <ul class="type" id="type">
+   <li data-type="bar">Bar</li>
+   <li data-type="bubble">Bubble</li>
+   <li data-type="spot">Spot</li>
+   <li data-type="cardiogram">Cardio</li>
+</ul>
   		<p>
   			Volume <input id="volume" type="range" min="0" max="100" value="60">
   		</p>
@@ -35,20 +35,40 @@
 				<li title="<%= name %>"><%= name %></li>
 			<% })%>
 		</ul>
-        <button id="Button">Close</button>
 	</div>
 
 	<div class="right" id="box">
-	    <img class='loading' src="images/loading.gif">
 	</div>
 
+    <div id="file-list-wrapper">
+        <div class="header">Music List</div>
+        <ul id="file-list">
+            	<% music.forEach(function(name){ %>
+				<li title="<%= name %>"><%= name %></li>
+			<% })%>
+        </ul>
+    </div>
 
+    <div id="effect-list-wrapper">
+        <div class="header">Effect List</div>
+        <ul id="effect-list">
+            <li data-type="glim" class="selected">Glim<img src="images/e3.jpg"></li>
+  			<li data-type="column">Column<img src="images/e6.jpg"></li>
+  			<li data-type="dot">Dot<img src="images/e4.jpg"></li>
+  			<li data-type="star">Star<img src="images/e7.jpg"></li>
+          	<li data-type="bar">Bar<img src="images/e1.jpg"></li>
+  			<li data-type="bubble">Bubble<img src="images/e5.jpg"></li>
+  			<li data-type="spot">Spot<img src="images/e0.jpg"></li>
+  			<li data-type="cardiogram">Cardio<img src="images/e2.jpg"></li>
+        </ul>
+    </div>
+
+    <audio id="music" class="hidden" controls></audio>
+
+    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
     <script type="text/javascript" src="/javascripts/three.min.js"></script>
-	<script type="text/javascript" src="/javascripts/jquery.min.js"></script>
 	<script type="text/javascript" src="/javascripts/MusicVisualizer.js"></script>
 	<script type="text/javascript" src="/javascripts/index.js"></script>
+
   </body>
-
-  <audio id="music" class="hidden" controls></audio>
-
 </html>
