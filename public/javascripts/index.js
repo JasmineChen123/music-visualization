@@ -13,6 +13,7 @@ box.appendChild(canvas);
 var Dots = [];
 var line;
 
+
 //inital for bar
 var bars = [];
 var dots = [];
@@ -79,6 +80,8 @@ var mv = new MusicVisualizer({
 	size: size,
 	visualizer: draw
 });
+
+
 
 /*---------------------------------------------------------*/
 /*杂项函数*/
@@ -161,8 +164,8 @@ resize();
 
 window.onresize = resize;
 
+//arr
 function draw(arr) { // 绘制矩形函数
-	//ctx.clearRect(0, 0, canvas.width, canvas.height); // 清除上次canvas,保证流畅效果
 	var w = width / size;
 	var cw = w * 0.6; // 矩形的宽度
 	var capH = cw > 10 ? 10 : cw; // 小帽的高度
@@ -490,7 +493,7 @@ function draw(arr) { // 绘制矩形函数
 }
 /*--------------------------------------------------------------*/
 
-/* 切换展现类型 */
+/* 切换展示效果 */
 draw.type = "glim"; // 在draw函数上绑定一个属性，默认展现glim图
 var types = $("#type li");
 for (var i = 0; i < types.length; i++) {
@@ -502,13 +505,16 @@ for (var i = 0; i < types.length; i++) {
 		draw.type = this.getAttribute('data-type');
 	}
 }
-
-/*音量*/
-$('#volume')[0].onmousemove = function() {
-	mv.changeVolume(this.value / this.max); //频率
+var types2 = $("#effect-list li");
+for (var i = 0; i < types.length; i++) {
+	types2[i].onclick = function() {
+		for (var j = 0; j < types2.length; j++) {
+			types2[j].className = "";
+		}
+		this.className = "selected";
+		draw.type = this.getAttribute('data-type');
+	}
 }
-$('#volume')[0].onmousemove(); // 让它默认60生效
-
 
 
 /*选择某一首歌播放*/
@@ -519,6 +525,77 @@ for (var i = 0; i < lis.length; i++) {
 		}
 		this.className = "selected";
 		mv.play("/media/" + this.title);//调用mv的play来演奏/media/下的乐曲
+		//audio.src=("/media/"+this.title);
+		//audio.play();
 	}
 }
+
+var lis2 = $('#file-list li');
+for (var i = 0; i < lis2.length; i++) {
+	lis2[i].onclick = function() {
+		for (var j = 0; j < lis2.length; j++) {
+			lis2[j].className = "";
+		}
+		this.className = "selected";
+		mv.play("/media/" + this.title);//调用mv的play来演奏/media/下的乐曲
+		//audio.src=("/media/"+this.title);
+		//audio.pause();
+	}
+    lis2[i].oncontextmenu = function(e){
+        e.preventDefault();
+        for (var j = 0; j < lis2.length; j++) {
+			lis2[j].className = "";
+		}
+		mv.pause();
+    }
+}
+
+/*音量*/
+$('#volume')[0].onmousemove = function() {
+	mv.changeVolume(this.value / this.max); //频率
+}
+$('#volume')[0].onmousemove(); // 让它默认60生效
+
+/*播放模式*/
+/*
+var audio = $('audio')[0];
+    if (audio.paused == true) {
+        console.log("paused")
+        audio.play();
+    } else {
+        console.log("playing")
+        audio.pause();
+        }
+*/
+
+
+
+/*显示左右隐藏的列表*/
+
+var fileListWrapper = document.getElementById('file-list-wrapper');
+var effectListWrapper = document.getElementById('effect-list-wrapper');
+var fileListHeader = document.getElementById('file-list-header');
+var effectListHeader = document.getElementById('effect-list-header');
+
+fileListHeader.oncontextmenu=function(e){
+    e.preventDefault();
+    if (fileListWrapper.style.left!= '0px') {
+        fileListWrapper.style.left='0px';
+        effectListWrapper.style.right='0px';
+    } else {
+        fileListWrapper.style.left='-190px';
+        effectListWrapper.style.right='-190px';
+    }
+}
+effectListHeader.oncontextmenu=function(e){
+    e.preventDefault();
+    if (fileListWrapper.style.left!= '0px') {
+        fileListWrapper.style.left='0px';
+        effectListWrapper.style.right='0px';
+    } else {
+        fileListWrapper.style.left='-190px';
+        effectListWrapper.style.right='-190px';
+    }
+}
+
 
