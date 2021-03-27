@@ -11,37 +11,29 @@
     <div id="background"></div>
   	<header>
   		<h1><%= title %></h1>
-<ul class="type" id="type">
-   <li data-type="glim" class="selected">Glim</li>
-   <li data-type="column" >Column</li>
-   <li data-type="dot">Dot</li>
-   <li data-type="star">Star</li>
-</ul>
-<br>
- <ul class="type" id="type">
-   <li data-type="bar">Bar</li>
-   <li data-type="bubble">Bubble</li>
-   <li data-type="spot">Spot</li>
-   <li data-type="cardiogram">Cardio</li>
-</ul>
+  		<ul class="type" id="type">
+            <li data-type="glim" class="selected">Glim</li>
+            <li data-type="column" >Column</li>
+            <li data-type="dot">Dot</li>
+            <li data-type="star">Star</li>
+        </ul>
+    <br>
+    <ul class="type" id="type">
+        <li data-type="bar">Bar</li>
+        <li data-type="bubble">Bubble</li>
+        <li data-type="spot">Spot</li>
+        <li data-type="cardiogram">Cardio</li>
+    </ul>
   		<p>
   			Volume <input id="volume" type="range" min="0" max="100" value="60">
   		</p>
   	</header>
 
-	<div class="left">
-		<ul id="list">
-			<% music.forEach(function(name){ %>
-				<li title="<%= name %>"><%= name %></li>
-			<% })%>
-		</ul>
-	</div>
-
 	<div class="right" id="box">
 	</div>
 
     <div id="file-list-wrapper">
-        <div class="header">Music List</div>
+        <div class="header" id="file-list-header">Music List</div>
         <ul id="file-list">
             	<% music.forEach(function(name){ %>
 				<li title="<%= name %>"><%= name %></li>
@@ -50,7 +42,7 @@
     </div>
 
     <div id="effect-list-wrapper">
-        <div class="header">Effect List</div>
+        <div class="header" id="effect-list-header">Effect List</div>
         <ul id="effect-list">
             <li data-type="glim" class="selected">Glim<img src="images/e3.jpg"></li>
   			<li data-type="column">Column<img src="images/e6.jpg"></li>
