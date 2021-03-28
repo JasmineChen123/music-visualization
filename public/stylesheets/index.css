@@ -68,6 +68,12 @@ audio::-webkit-media-controls-panel {
     border-radius: 0;
 }
 
+audio::-webkit-media-controls-play-button{
+    display:none;
+
+}
+
+
 audio::-webkit-media-controls-current-time-display {
     color: #30ABD5;
 }
@@ -211,6 +217,10 @@ header .type li:last-child {
 }
 
 /* 播放样式 */
+input[type="range"]
+{display:none;
+}
+
 input[type="range"]{
 	-webkit-appearance: none;
 	height: 8px;
@@ -239,6 +249,7 @@ input[type="range"]::-moz-range-thumb{
 	background: #fff;
 	border: none;
 }
+
 /*背景设置*/
 #background{
     width: 100%;
@@ -336,5 +347,4 @@ input[type="range"]::-moz-range-thumb{
     top: 0%;
     display: none
 }
-
 
