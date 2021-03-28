@@ -1,4 +1,5 @@
 /* webAudio核心功能封装为对象 */
+var audio = $('audio')[0];
 function MusicVisualizer(obj) {
 	this.source = null; //BufferSource节点
 
@@ -18,6 +19,7 @@ function MusicVisualizer(obj) {
 	this.visualizer = obj.visualizer; //draw可视化
 
 	this.visualize(); //自执行
+	this.state = MusicVisualizer.ac.state;
 }
 
 MusicVisualizer.ac = new(window.AudioContext || window.webkitAudioContext)();
@@ -33,6 +35,7 @@ MusicVisualizer.prototype.load = function(url, fun) { //加载
 	this.xhr.send();
 }
 
+
 MusicVisualizer.prototype.decode = function(arraybuffer, fun) { // 解码方法
 	MusicVisualizer.ac.decodeAudioData(arraybuffer, function(buffer) { // 异步解码包含在arrayBuffer中的音频数据
 		fun(buffer);
@@ -41,10 +44,12 @@ MusicVisualizer.prototype.decode = function(arraybuffer, fun) { // 解码方法
 	});
 }
 
+//播放
 MusicVisualizer.prototype.play = function(url) {
 	var n = ++this.count;
 	var self = this;
 	this.source && this.source[this.source.stop ? "stop" : "noteOff"]();
+
 	this.load(url, function(arraybuffer) {
 		if (n != self.count) {
 			return;
@@ -60,12 +65,38 @@ MusicVisualizer.prototype.play = function(url) {
 			self.source = bs;
 		})
 	})
+
+}
+//右键控制暂停/播放
+MusicVisualizer.prototype.pause = function(){
+    if (MusicVisualizer.ac.state =="running"){
+        console.log(MusicVisualizer.ac.state)
+        MusicVisualizer.ac.suspend();
+       }
+     else if(MusicVisualizer.ac.state =="suspended"){
+        console.log(MusicVisualizer.ac.state)
+        MusicVisualizer.ac.resume();
+       }
+}
+//重启
+MusicVisualizer.prototype.restart = function(url){
+    if(MusicVisualizer.ac.state =="suspended"){
+        MusicVisualizer.ac.resume();
+        this.play(url);
+        }
+    else {
+        this.play(url);
+    }
 }
 
-MusicVisualizer.prototype.changeVolume = function(percent) { // 音量控制方法
-	this.gainNode.gain.value = percent * percent;
+
+// 音量控制方法
+MusicVisualizer.prototype.changeVolume = function(percent) {
+	this.gainNode.gain.value = percent * percent;   //gainNode 音量节点
 }
 
+
+//音乐可视化
 MusicVisualizer.prototype.visualize = function() {
 	var arr = new Uint8Array(this.analyser.frequencyBinCount); //实时得到的音频频域的数据个数为前面设置的fftSize的一半
 	requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame; //动画函数
@@ -79,4 +110,5 @@ MusicVisualizer.prototype.visualize = function() {
 		requestAnimationFrame(v);
 	}
 	requestAnimationFrame(v); //动画函数
+
 }
