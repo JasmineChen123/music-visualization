@@ -12,6 +12,7 @@
     <div id="background"></div>
   	<header>
   		<h1><%= title %></h1>
+
   		<ul class="type" id="type">
             <li data-type="glim" class="selected">Glim</li>
             <li data-type="column" >Column</li>
@@ -38,6 +39,8 @@
 				<li title="<%= name %>"><%= name %></li>
 			<% })%>
         </ul>
+        <input id="input-file" type="file" class="hidden" accept="audio/mp3" multiple>
+
     </div>
 
     <div id="effect-list-wrapper">
@@ -54,15 +57,13 @@
         </ul>
     </div>
 
-
     <audio id="music" class="hidden" controls></audio>
-
-    <input id="input-file" type="file" class="hidden" accept="audio/mp3" multiple>
 
     <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
     <script type="text/javascript" src="/javascripts/three.min.js"></script>
 	<script type="text/javascript" src="/javascripts/MusicVisualizer.js"></script>
 	<script type="text/javascript" src="/javascripts/index.js"></script>
+
 
   </body>
 </html>
