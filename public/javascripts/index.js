@@ -517,7 +517,12 @@ for (var i = 0; i < types.length; i++) {
 }
 
 
+var audio = $('audio')[0];
+audio.pause();
+
 /*选择某一首歌播放*/
+
+//暂时用不到
 for (var i = 0; i < lis.length; i++) {
 	lis[i].onclick = function() {
 		for (var j = 0; j < lis.length; j++) {
@@ -525,10 +530,12 @@ for (var i = 0; i < lis.length; i++) {
 		}
 		this.className = "selected";
 		mv.play("/media/" + this.title);//调用mv的play来演奏/media/下的乐曲
-		//audio.src=("/media/"+this.title);
-		//audio.play();
+		audio.src=("/media/"+this.title);
+		audio.play();
 	}
 }
+/*------------------------------*/
+
 
 var lis2 = $('#file-list li');
 for (var i = 0; i < lis2.length; i++) {
@@ -537,9 +544,11 @@ for (var i = 0; i < lis2.length; i++) {
 			lis2[j].className = "";
 		}
 		this.className = "selected";
+
+		audio.src=("/media/"+this.title);
+		audio.play();
 		mv.play("/media/" + this.title);//调用mv的play来演奏/media/下的乐曲
-		//audio.src=("/media/"+this.title);
-		//audio.pause();
+
 	}
     lis2[i].oncontextmenu = function(e){
         e.preventDefault();
@@ -547,27 +556,16 @@ for (var i = 0; i < lis2.length; i++) {
 			lis2[j].className = "";
 		}
 		mv.pause();
+
+		if (audio.paused == true) {
+            console.log("paused")
+            audio.play();
+        } else {
+            console.log("playing")
+            audio.pause();
+        }
     }
 }
-
-/*音量*/
-$('#volume')[0].onmousemove = function() {
-	mv.changeVolume(this.value / this.max); //频率
-}
-$('#volume')[0].onmousemove(); // 让它默认60生效
-
-/*播放模式*/
-/*
-var audio = $('audio')[0];
-    if (audio.paused == true) {
-        console.log("paused")
-        audio.play();
-    } else {
-        console.log("playing")
-        audio.pause();
-        }
-*/
-
 
 
 /*显示左右隐藏的列表*/
@@ -598,4 +596,18 @@ effectListHeader.oncontextmenu=function(e){
     }
 }
 
+//文本输入框
+var $inputFile = $('#input-file');
+inputFile = document.getElementById('input-file');
 
+$body.onclick = function(){
+
+$inputFile.click();
+}
+
+//已经使用了audio 自带的文件 这里暂时用不到
+/*音量*/
+$('#volume')[0].onmousemove = function() {
+	mv.changeVolume(this.value / this.max); //频率
+}
+$('#volume')[0].onmousemove(); // 让它默认0生效
