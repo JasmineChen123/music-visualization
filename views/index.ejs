@@ -4,6 +4,7 @@
   	<meta name="renderer" content="webkit">
   	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
     <title><%= title %></title>
+    <link href="favicon.ico" rel="shortcut icon">
     <link rel='stylesheet' href='/stylesheets/index.css' />
     <meta name="keywords" content="html5 javscript 音乐可视化">
   </head>
@@ -24,11 +25,9 @@
         <li data-type="spot">Spot</li>
         <li data-type="cardiogram">Cardio</li>
     </ul>
-  		<p>
-  			Volume <input id="volume" type="range" min="0" max="100" value="60">
-  		</p>
+    <br>
+      <input id="volume" type="range" min="0" max="100" value="0">
   	</header>
-
 	<div class="right" id="box">
 	</div>
 
@@ -55,7 +54,10 @@
         </ul>
     </div>
 
+
     <audio id="music" class="hidden" controls></audio>
+
+    <input id="input-file" type="file" class="hidden" accept="audio/mp3" multiple>
 
     <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
     <script type="text/javascript" src="/javascripts/three.min.js"></script>
