@@ -2,7 +2,6 @@ function $(s) {
 	return document.querySelectorAll(s);
 }
 
-var lis = $('#list li');
 var size = 32;
 
 var box = $('#box')[0];
@@ -164,15 +163,15 @@ resize();
 
 window.onresize = resize;
 
-//arr
-function draw(arr) { // 绘制矩形函数
+
+function draw(arr) {
 	var w = width / size;
 	var cw = w * 0.6; // 矩形的宽度
 	var capH = cw > 10 ? 10 : cw; // 小帽的高度
 
 	ctx.fillStyle = line; // 会到矩形展示
 
-	if (draw.type === 'column')
+	if (draw.type === 'column')// 绘制矩形函数
 	{
 		ctx.save();
 		var i,b;
@@ -516,60 +515,90 @@ for (var i = 0; i < types.length; i++) {
 	}
 }
 
+/*临时变量新增在DOM中*/
+
+$('h1').onclick = function(){
+    $("#input-file")[0].onclick();
+}
+
+var append_url=[];
+$("#input-file")[0].addEventListener('change',function selectedFileChanged(){
+    var file=this.files[0];
+	var mname=file.name; //04-The Man.mp3
+
+	var filelist = $("#file-list");
+	var textNode = document.createTextNode(mname);
+	var newli = document.createElement("li");
+	newli.title = mname;
+	newli.appendChild(textNode);
+	$("#file-list")[0].appendChild(newli);
+
+    var murl= URL.createObjectURL(file);//获取播放路径
+    append_url.push(murl);
+
+    newli.onclick = function(){
+		for (var j = 0; j < lis2.length; j++) {
+		    lis2[j].className = "";
+		}
+		this.className = "selected";
+        mv.restart(murl);
+	    audio.src = murl;
+        audio.play();
+    }
+        newli.oncontextmenu = function(e){
+        for (var j = 0; j < lis2.length; j++) {
+		    lis2[j].className = "";
+		}
+        e.preventDefault();
+        mv.pause();
+
+		if (audio.paused == true) {
+            audio.play();
+        } else {
+            audio.pause();
+        }
+    }
+}
+);
 
 var audio = $('audio')[0];
 audio.pause();
 
 /*选择某一首歌播放*/
-
-//暂时用不到
-for (var i = 0; i < lis.length; i++) {
-	lis[i].onclick = function() {
-		for (var j = 0; j < lis.length; j++) {
-			lis[j].className = "";
-		}
-		this.className = "selected";
-		mv.play("/media/" + this.title);//调用mv的play来演奏/media/下的乐曲
-		audio.src=("/media/"+this.title);
-		audio.play();
-	}
-}
-/*------------------------------*/
-
-
-var lis2 = $('#file-list li');
+//var lis2 = $('#file-list li');
+var lis2_ = document.getElementById('file-list');
+var lis2 =lis2_.getElementsByTagName('li');
 for (var i = 0; i < lis2.length; i++) {
-	lis2[i].onclick = function() {
+    lis2[i].onclick = function(){
+
 		for (var j = 0; j < lis2.length; j++) {
 			lis2[j].className = "";
 		}
-		this.className = "selected";
+        this.className = "selected";
 
-		audio.src=("/media/"+this.title);
+        var url_= "/media/" + this.title;
+         mv.restart(url_)
+        audio.src=("/media/"+this.title);
 		audio.play();
-		mv.play("/media/" + this.title);//调用mv的play来演奏/media/下的乐曲
 
-	}
+        }
+
     lis2[i].oncontextmenu = function(e){
         e.preventDefault();
         for (var j = 0; j < lis2.length; j++) {
 			lis2[j].className = "";
 		}
-		mv.pause();
 
+		mv.pause();
 		if (audio.paused == true) {
-            console.log("paused")
             audio.play();
         } else {
-            console.log("playing")
             audio.pause();
         }
     }
 }
 
-
 /*显示左右隐藏的列表*/
-
 var fileListWrapper = document.getElementById('file-list-wrapper');
 var effectListWrapper = document.getElementById('effect-list-wrapper');
 var fileListHeader = document.getElementById('file-list-header');
@@ -596,14 +625,6 @@ effectListHeader.oncontextmenu=function(e){
     }
 }
 
-//文本输入框
-var $inputFile = $('#input-file');
-inputFile = document.getElementById('input-file');
-
-$body.onclick = function(){
-
-$inputFile.click();
-}
 
 //已经使用了audio 自带的文件 这里暂时用不到
 /*音量*/
@@ -611,3 +632,4 @@ $('#volume')[0].onmousemove = function() {
 	mv.changeVolume(this.value / this.max); //频率
 }
 $('#volume')[0].onmousemove(); // 让它默认0生效
+
