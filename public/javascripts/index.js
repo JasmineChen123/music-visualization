@@ -3,7 +3,6 @@ function $(s) {
 }
 
 var size = 32;
-
 var box = $('#box')[0];
 var height, width;
 var canvas = document.createElement("canvas");
@@ -74,29 +73,27 @@ line_color = {r: 100,g: 100,b: 100,
 
 
 /**----------------------------------------------------------------------------**/
-//接收获取音频频率的函数数组
+/*接收获取音频频率的函数数组*/
 var mv = new MusicVisualizer({
 	size: size,
 	visualizer: draw
 });
 
-
-
 /*---------------------------------------------------------*/
 /*杂项函数*/
-// 随机生成两个数之间的数
+// 随机数
 function random(m, n) {
 	return Math.round(Math.random() * (n - m) + m);
 }
-
 // 获取两点间距离
 function findDistance(p1, p2){
     return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
 }
-
+// 随机数
 function intRandom(low, up) {
     return Math.floor(Math.random() * (up - low) + low);
 }
+// 改变颜色
 function changeColor() {
     choice = intRandom(0, 9);
     if (choice < 3) {
@@ -123,9 +120,9 @@ function changeColor() {
     }
 }
 
-/*------------------------------------------------------------*/
+/*--------------------------canvas绘制---------------------------------------*/
 
-//斑点生成函数
+//canvas初始化——斑点生成函数
 function getDots() {
 	Dots = [];
 
@@ -160,10 +157,9 @@ function resize() {
 	getDots();
 }
 resize();
-
 window.onresize = resize;
 
-
+//canvas 8种可视化效果的具体实现
 function draw(arr) {
 	var w = width / size;
 	var cw = w * 0.6; // 矩形的宽度
@@ -223,7 +219,7 @@ function draw(arr) {
 	    ctx.clearRect(0, 0, canvas.width, canvas.height); //否则会产生划过的痕迹
 	    for (var i = 0; i < size; i++) {
 		    var o = Dots[i];
-			ctx.beginPath(); // 表示要开始绘制，没有该方法会有连线
+			ctx.beginPath();
 			var r = 10 + arr[i] / 256 * (height > width ? width : height) / 10; //绘制圆的半径(设置最小值为10)
 			ctx.arc(o.x, o.y, r, 0, Math.PI * 2, true);
 			var g = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, r); //创建径向渐变
@@ -249,7 +245,7 @@ function draw(arr) {
             //ctx.shadowBlur = o.shadowBlur;
             //ctx.shadowColor = o.color;
             o.x+=o.dx;
-            o.x=o.x>canvas.width?0:o.x;//回到最左边！！
+            o.x=o.x>canvas.width?0:o.x;
             ctx.closePath();
 		}
 		ctx.restore();
@@ -515,8 +511,7 @@ for (var i = 0; i < types.length; i++) {
 	}
 }
 
-/*临时变量新增在DOM中*/
-
+/*临时增加的歌曲用DOM方法添加*/
 $('h1').onclick = function(){
     $("#input-file")[0].onclick();
 }
@@ -524,7 +519,7 @@ $('h1').onclick = function(){
 var append_url=[];
 $("#input-file")[0].addEventListener('change',function selectedFileChanged(){
     var file=this.files[0];
-	var mname=file.name; //04-The Man.mp3
+	var mname=file.name;
 
 	var filelist = $("#file-list");
 	var textNode = document.createTextNode(mname);
@@ -565,7 +560,6 @@ var audio = $('audio')[0];
 audio.pause();
 
 /*选择某一首歌播放*/
-//var lis2 = $('#file-list li');
 var lis2_ = document.getElementById('file-list');
 var lis2 =lis2_.getElementsByTagName('li');
 for (var i = 0; i < lis2.length; i++) {
@@ -625,11 +619,24 @@ effectListHeader.oncontextmenu=function(e){
     }
 }
 
-
-//已经使用了audio 自带的文件 这里暂时用不到
+//已经使用了audio 内置的volume 暂时用不到
 /*音量*/
 $('#volume')[0].onmousemove = function() {
 	mv.changeVolume(this.value / this.max); //频率
 }
 $('#volume')[0].onmousemove(); // 让它默认0生效
 
+/*help按钮*/
+var help_image = document.getElementById('help-image');
+var help = document.getElementById('help');
+var help_btn = document.getElementById('help-btn');
+$('#help-btn')[0].onclick = function(){
+    help_image.style.display = 'block';
+    help.style.display = 'block';
+}
+
+$('#help')[0].onclick = function(){
+    help_image.style.display = 'none';
+    help.style.display = 'none';
+    help_btn.style.display = 'none';
+}
