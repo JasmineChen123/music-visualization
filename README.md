@@ -1,5 +1,5 @@
 ## Dynamic Music 
-This is a music visualization program for IS205
+This is a music visualization program for IS305
 #### Prerequisites
 * Windows 10
 * Node.js 14.16.0
@@ -21,12 +21,15 @@ Multiple music visulization options in this project.
 *  adjust the volume 
 *  download the music 
 *  drag the progress bar
+![Overall view](./images/9.png)
 ##### Music Visualization
 * This program provide a wide range of visulization options, 
 including bars , glimming dots, waves, cardiogram, spinning star
  and streching bubbles. 
 * The element on the canvas will change according to the rhythm and speed 
 of music and give you a pleasant and enjoyable experience.
+* You can either change the effect by clicking the effect list or click the 
+option below the title. 
 1. Glimming Dots shift to the left
 ![Glimming Dots](./images/1.png)
 2. Gradient Columns
@@ -44,6 +47,14 @@ of music and give you a pleasant and enjoyable experience.
 8. Electrocardiogram
 ![Electrocardiogram](./images/8.png)
 
+##### Help page
+* view the help page
+* hidden the progress bar
+* hide the play list and effect list.
+-------
+#### To do
+* Enrich the visualization effects
+* Add register and login for users
 
 
 
