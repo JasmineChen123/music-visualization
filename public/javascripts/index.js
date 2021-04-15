@@ -11,7 +11,7 @@ box.appendChild(canvas);
 var Dots = [];
 var line;
 
-
+/*--------------------------canvas初始化-----------------------------*/
 //inital for bar
 var bars = [];
 var dots = [];
@@ -72,15 +72,15 @@ line_color = {r: 100,g: 100,b: 100,
               rD: 1, gD: 1, bD: 1,}
 
 
-/**----------------------------------------------------------------------------**/
-/*接收获取音频频率的函数数组*/
+/*--------------------接收获取音频频率的函数数组---------------------*/
+
 var mv = new MusicVisualizer({
 	size: size,
 	visualizer: draw
 });
 
-/*---------------------------------------------------------*/
-/*杂项函数*/
+/*-------------------------杂项函数---------------------------------*/
+
 // 随机数
 function random(m, n) {
 	return Math.round(Math.random() * (n - m) + m);
@@ -120,7 +120,7 @@ function changeColor() {
     }
 }
 
-/*--------------------------canvas绘制---------------------------------------*/
+/*--------------------------canvas绘制--------------------------------*/
 
 //canvas初始化——斑点生成函数
 function getDots() {
@@ -139,7 +139,6 @@ function getDots() {
 			color: color,
 			cap: 0, //柱状图上的小帽属性
 			shadowBlur:shadowBlur,
-			//alpha:alpha
 		});
 	}
 }
@@ -159,15 +158,15 @@ function resize() {
 resize();
 window.onresize = resize;
 
-//canvas 8种可视化效果的具体实现
+//8种可视化效果的具体实现
 function draw(arr) {
 	var w = width / size;
-	var cw = w * 0.6; // 矩形的宽度
-	var capH = cw > 10 ? 10 : cw; // 小帽的高度
+	var cw = w * 0.6; // 矩形宽度
+	var capH = cw > 10 ? 10 : cw; // 小帽高度
 
-	ctx.fillStyle = line; // 会到矩形展示
+	ctx.fillStyle = line;
 
-	if (draw.type === 'column')// 绘制矩形函数
+	if (draw.type === 'column')// 带颜色渐变的柱状图
 	{
 		ctx.save();
 		var i,b;
@@ -192,7 +191,6 @@ function draw(arr) {
                 }
             }
             ctx.fillStyle = line;
-            /*ctx.fillStyle = 'rgba(' + b.color + ', 0.8)';*/
             b.h *= 1.8;
             ctx.fillRect(b.x, canvas.height - b.h, b.w*0.8, b.h);
             if (dots[i] < b.h) {
@@ -201,7 +199,6 @@ function draw(arr) {
                 dots[i]--;
             };
 	        ctx.fillStyle = line;
-            /*ctx.fillStyle = ctx.fillStyle.replace('0.8)', '0.5)');*/
             ctx.fillRect(b.x, canvas.height - dots[i] - b.w, b.w*0.8, b.w);
             total += arr[i];
 	    }
@@ -214,9 +211,9 @@ function draw(arr) {
         ctx.fillRect(0, 0, avarage, canvas.height);
         ctx.restore();
 
-	} else if (draw.type === 'glim') {
+	} else if (draw.type === 'glim') { //带有颜色放射渐变的斑点
 	    ctx.save();
-	    ctx.clearRect(0, 0, canvas.width, canvas.height); //否则会产生划过的痕迹
+	    ctx.clearRect(0, 0, canvas.width, canvas.height);
 	    for (var i = 0; i < size; i++) {
 		    var o = Dots[i];
 			ctx.beginPath();
@@ -227,16 +224,16 @@ function draw(arr) {
 			g.addColorStop(1, o.color);
 			ctx.fillStyle = g;
 			ctx.fill();
-			o.x += o.dx; // 圆向右移动
-			o.x = o.x > canvas.width ? 0 : o.x; // 移到最右边时回到最左边！！
+			o.x += o.dx;
+			o.x = o.x > canvas.width ? 0 : o.x;
 		}
 		ctx.restore();
 
-	}else if (draw.type === 'dot') {
+	}else if (draw.type === 'dot') { //带有颜色梯度渐变的斑点
 	    ctx.save();
 	    ctx.clearRect(0, 0, canvas.width, canvas.height);
 	    for (var i = 0; i < size; i++) {
-	        ctx.beginPath(); // 表示要开始绘制，没有该方法会有连线
+	        ctx.beginPath();
 		    var o = Dots[i];
 			var r = 10 + arr[i] / 256 * (height > width ? width : height) / 10; //绘制圆的半径(设置最小值为10)
 			ctx.arc(o.x, o.y, r, 0, Math.PI * 2, true);
@@ -249,7 +246,7 @@ function draw(arr) {
             ctx.closePath();
 		}
 		ctx.restore();
-	}else if (draw.type==="star"){
+	}else if (draw.type==="star"){ //旋转的星
 	    ctx.save();
 	    twoPI = 2 * Math.PI,
         angleGap = twoPI / 3,
@@ -273,7 +270,7 @@ function draw(arr) {
 	        total += arr[i];
 	    }
 	    ctx.restore();
-	}else if (draw.type==="bubble"){
+	}else if (draw.type==="bubble"){ //气泡图
 	    //initial
         ctx.save();
         len = arr.length / 2 ;  //粒子密度变大
@@ -324,7 +321,7 @@ function draw(arr) {
         }
         ctx.restore();
 	}
-	else if(draw.type==="bar")
+	else if(draw.type==="bar") //柱状图
 	{   var i,b;
         var total = 0, avarage = 0;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -360,7 +357,7 @@ function draw(arr) {
         ctx.fillRect(0, 0, avarage, canvas.height);
         ctx.restore();
     }
-    else if(draw.type==="spot")
+    else if(draw.type==="spot") //伸缩斑点图
     {
         var  len = 64;
         ctx.save();
@@ -401,13 +398,13 @@ function draw(arr) {
         }
         ctx.restore();
     }
-    else if(draw.type==="cardiogram")
+    else if(draw.type==="cardiogram")//心电图
     {   ctx.save();
 
         var color = null,
             choice;
-        var width = canvas.width / 64, //changed
-            x = 0,//调整后会有不规则线条
+        var width = canvas.width / 64,
+            x = 0,
             y = 0,
             direction = 1,
             middle =  canvas.height / 2 ,
@@ -417,7 +414,7 @@ function draw(arr) {
             lastAvarage = avarage;
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        changeColor(); //改变颜色
+        changeColor();
         var grd = ctx.createLinearGradient(0, 0, canvas.width, canvas.height),
             r = line_color.r,
             g = line_color.g,
@@ -434,7 +431,7 @@ function draw(arr) {
 
         if (seperateTimer == 0) {
             seperateTimer = Math.floor(Math.random() * 50) + 20;
-            for (var i = 0; i <64; i++) {//changed
+            for (var i = 0; i <64; i++) {
                 seperate[i] = 0;
             }
             seperateNum = Math.floor(Math.random() * 15);
@@ -489,7 +486,7 @@ function draw(arr) {
 /*--------------------------------------------------------------*/
 
 /* 切换展示效果 */
-draw.type = "glim"; // 在draw函数上绑定一个属性，默认展现glim图
+draw.type = "glim"; // 默认展现glim图
 var types = $("#type li");
 for (var i = 0; i < types.length; i++) {
 	types[i].onclick = function() {
@@ -592,7 +589,7 @@ for (var i = 0; i < lis2.length; i++) {
     }
 }
 
-/*显示左右隐藏的列表*/
+/*显示或隐藏左右列表*/
 var fileListWrapper = document.getElementById('file-list-wrapper');
 var effectListWrapper = document.getElementById('effect-list-wrapper');
 var fileListHeader = document.getElementById('file-list-header');
@@ -619,12 +616,12 @@ effectListHeader.oncontextmenu=function(e){
     }
 }
 
-//已经使用了audio 内置的volume 暂时用不到
-/*音量*/
+
+/*音量调节*/
 $('#volume')[0].onmousemove = function() {
-	mv.changeVolume(this.value / this.max); //频率
+	mv.changeVolume(this.value / this.max);
 }
-$('#volume')[0].onmousemove(); // 让它默认0生效
+$('#volume')[0].onmousemove();
 
 /*help按钮*/
 var help_image = document.getElementById('help-image');
