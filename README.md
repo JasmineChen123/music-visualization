@@ -21,7 +21,13 @@ Multiple music visulization options in this project.
 *  adjust the volume 
 *  download the music 
 *  drag the progress bar
-![Overall view](./images/9.png)
+
+This is the overview.
+![Oveview](./images/9.png)
+
+This is the help page.
+![Help](./images/help.png)
+
 ##### Music Visualization
 * This program provide a wide range of visulization options, 
 including bars , glimming dots, waves, cardiogram, spinning star
