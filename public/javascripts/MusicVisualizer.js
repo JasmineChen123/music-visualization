@@ -51,9 +51,9 @@ MusicVisualizer.prototype.play = function(url) {
 	this.source && this.source[this.source.stop ? "stop" : "noteOff"]();
 
 	this.load(url, function(arraybuffer) {
-		if (n != self.count) {
+		if (n != self.count) {//正常情况n和count是相等的
 			return;
-		} //正常情况n和count是相等的,用到了闭包的知识
+		}
 		self.decode(arraybuffer, function(buffer) {
 			if (n != self.count) {
 				return;
