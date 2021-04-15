@@ -511,7 +511,7 @@ for (var i = 0; i < types.length; i++) {
 	}
 }
 
-/*临时增加的歌曲用DOM方法添加*/
+/*用DOM方法添加临时增加的歌曲*/
 $('h1').onclick = function(){
     $("#input-file")[0].onclick();
 }
