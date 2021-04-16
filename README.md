@@ -14,7 +14,7 @@ http://localhost:3000/
 ```
 #### Function
 Multiple music visulization options in this project.
-##### Baic music plying function
+##### Basic music playing function
 *  resume or pause music with the right mouse button
 *  load the music in the folder(./media) automatically
 *  add songs you like to the playlist
