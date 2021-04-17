@@ -23,7 +23,7 @@ Multiple music visulization options in this project.
 *  drag the progress bar
 
 This is the overview.
-![Oveview](./images/9.png)
+![Oveview](./images/display.gif)
 
 This is the help page.
 ![Help](./images/help.png)
